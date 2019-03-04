@@ -1,9 +1,72 @@
 # The prime factors of 13195 are 5, 7, 13 and 29.
 
-# What is the largest prime factor of the number 600851475143 ?
-require 'prime'
-def factors_of(number)
-  number.prime_division.map(&:first)
+# # What is the largest prime factor of the number 600851475143 ?
+
+def largest_prime_factor(number)
+  prime_factors(number)
+  p @factor_array.last
 end
 
-p factors_of(600851475143)
+def prime_factors(number)
+  @check = number
+  @prime_number = 0
+  @number = number
+  @factor_array = []
+  @finished = false
+  until @finished == true
+    next_prime
+    @factored = false
+    until @factored == true
+      factor(@number)
+    end
+    finished?
+  end
+  return @factor_array
+end
+
+def factor(number)
+  if number % @prime_number == 0
+    @factor_array << @prime_number
+    @number = number / @prime_number
+  else
+    @factored = true
+  end
+end
+
+def is_prime(number)
+  prime = true
+  (number - 1).times do |i|
+    index = i+1
+    if number % index == 0 && index != 1
+      prime = false
+    end
+  end
+  if prime == true && number != 0 && number != 1
+    return true
+  else
+    return false
+  end
+end
+
+def next_prime
+  @prime_number +=1
+  while true
+    if is_prime(@prime_number) == true
+      break
+    else
+    @prime_number +=1
+    end
+  end
+end
+
+def finished?
+  checker = 1
+  @factor_array.length.times do |i|
+    checker = @factor_array[i] * checker
+  end
+  if checker == @check
+    @finished = true
+  end
+end
+
+largest_prime_factor(600851475143)
