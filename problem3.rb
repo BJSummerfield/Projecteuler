@@ -13,10 +13,10 @@ def prime_factors(number)
   @number = number
   @factor_array = []
   @finished = false
-  until @finished == true
+  until @finished
     next_prime
     @factored = false
-    until @factored == true
+    until @factored 
       factor(@number)
     end
     finished?
@@ -33,30 +33,24 @@ def factor(number)
   end
 end
 
-def is_prime(number)
-  prime = true
-  (number - 1).times do |i|
-    index = i+1
-    if number % index == 0 && index != 1
-      prime = false
-    end
-  end
-  if prime == true && number != 0 && number != 1
-    return true
-  else
-    return false
+def next_prime
+  @prime_number +=1
+  while !is_prime(@prime_number)
+    @prime_number +=1
   end
 end
 
-def next_prime
-  @prime_number +=1
-  while true
-    if is_prime(@prime_number) == true
-      break
-    else
-    @prime_number +=1
+def is_prime(number)
+  if number == 0 || number == 1 || number != 2 && number % 2 == 0
+   return false 
+  end
+  (number - 1).times do |i|
+    index = i+1
+    if number % index == 0 && index != 1
+      return false
     end
   end
+  return true
 end
 
 def finished?
