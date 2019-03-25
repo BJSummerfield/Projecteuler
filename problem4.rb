@@ -17,4 +17,3 @@ while s < 1000
 end
 
 p a.sort.last
-
