@@ -6,20 +6,24 @@
 # There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 # Find the product abc.
 
-c = 2
-while c < 1000
-  b = 2
-  c += 1
-  while b < c
-    a = 1
-    b += 1
-    while a < b
-      if a + b + c == 1000 && (a**2 + b**2) == c**2
-        numbers = [a,b,c]
+def pythagorean_triplet(number)
+  c = 2
+  while c < number
+    b = 2
+    c += 1
+    while b < c
+      a = 1
+      b += 1
+      while a < b
+        if a + b + c == number && (a**2 + b**2) == c**2
+          numbers = [a,b,c]
+        end
+        a += 1
       end
-      a += 1
     end
   end
+  p "a = #{numbers[0]} b = #{numbers[1]} c = #{numbers[2]}"
+  p "abc = #{numbers.inject(:*)}"
 end
-p "a = #{numbers[0]} b = #{numbers[1]} c = #{numbers[2]}"
-p "abc = #{numbers.inject(:*)}"
+
+pythagorean_triplet(1000)
