@@ -79,6 +79,6 @@ def diagonals_2(grid)
   end
   return array
 end
-
+# p rows(grid)
 p prob11(grid)
 p prob11(grid).inject(:*)
