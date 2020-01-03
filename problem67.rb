@@ -1,6 +1,6 @@
 require 'benchmark'
 
-triangle_str = File.open('./needed_files/18.txt').read
+triangle_str = File.open('./needed_files/67.txt').read
 
 def start(triangle_str)
   time = Benchmark.measure {

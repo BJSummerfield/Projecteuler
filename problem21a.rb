@@ -17,7 +17,7 @@ def runner(num)
     next_num(num, primes, i, arr)
     i += 1
   end
-  p arr.inject(:+)
+  p arr.reduce(:+)
 end
 
 def next_num(num, primes, i, arr)
@@ -49,7 +49,7 @@ def get_divisors(factors)
   a = (1..(factors.length)).flat_map{|size| factors.combination(size).to_a}.uniq
   a.pop
   a.each do |combo|
-    sum += combo.inject(:*)
+    sum += combo.reduce(:*)
   end
   sum += 1
   return sum
