@@ -1,3 +1,12 @@
+require 'benchmark'
+
+def start(number)
+  time = Benchmark.measure {
+    runner(number)
+  }
+  puts time.real
+end
+
 def runner(number)
   amicable_nums = []
   number.times do |i|
@@ -27,4 +36,4 @@ def proper_divisors(num)
   end
 end
 
-runner(10000)
+start(10000)
