@@ -2,6 +2,14 @@ fib = []
 num = 1
 check = 1000
 
+require 'benchmark'
+def start(fib,num,check)
+  time = Benchmark.measure {
+    runner(fib,num,check)
+  }
+  puts time.real
+end
+
 def runner(fib, num, check)
   until num.to_s.length == check
     add_to_fib(fib, num)
@@ -18,5 +26,5 @@ def add_to_fib(fib, num)
   end
 end
 
-runner(fib,num,check)
+start(fib,num,check)
 

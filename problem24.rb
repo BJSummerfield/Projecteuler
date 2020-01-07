@@ -1,4 +1,5 @@
 require 'benchmark'
+
 def start
   time = Benchmark.measure {
     solve
