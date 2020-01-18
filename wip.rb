@@ -1,5 +1,76 @@
-list = Array(1..10)
-end_nodes = 5
+require 'benchmark'
+list = [1,2,3,4,5,6]
+end_nodes = 3
+
+def start(list, end_nodes)
+  time = Benchmark.measure {
+    puts "Brute_Force"
+    brute_force(list)
+  }
+  puts "Completion Time"
+  puts time.real
+  puts ""
+  time = Benchmark.measure {
+    puts "Algo Solution"
+    runner(list, end_nodes)
+  }
+  puts "Completion Time"
+  puts time.real
+end
+
+def brute_force(list)
+  list = list.permutation(3).to_a.permutation(3).to_a
+  unique = []
+  i = 0
+  while i < (list.length)
+    if list[i].flatten.uniq.length == 6
+      if list[i].map { |x| x.reduce(:+) }.uniq.length == 1
+        a = []
+        b = []
+        c = []
+        check = true
+        3.times do |j|
+          a << list[i][j][0]
+          b << list[i][j][1]
+          c << list[i][j][2]
+        end
+        a.each do |first|
+          if b.include?(first) || c.include?(first)
+            check = false
+          end
+        end
+        if a.uniq.length == 3 && b.uniq.length == 3 && c.uniq.length == 3
+          if check == true
+            unique << list[i]
+          end
+        end
+      end
+    end
+    i += 1
+  end
+
+  sorted = []
+  unique.each do |i|
+    a = i.sort { |x,y| x[0] <=> y[0] }
+    unless sorted.include?(a)
+      sorted << a
+    end
+  end
+  a = []
+  sorted.each do |string|
+    x = []
+    x << string[0]
+    if string[0][2] == string[1][1]
+      x << string[1]
+      x << string[2]
+    else
+      x << string[2]
+      x << string[1]
+    end
+    a << x
+  end
+  p a.last.flatten.join
+end
 
 def runner(list, end_nodes)
   total = find_max(list, end_nodes)
@@ -63,4 +134,4 @@ def find_max(list, end_nodes)
   return total / end_nodes
 end
 
-runner(list, end_nodes)
+start(list, end_nodes)
