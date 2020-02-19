@@ -1,42 +1,48 @@
+require 'benchmark'
+
+def start
+  time = Benchmark.measure {
+    runner
+  }
+  puts time.real
+end
 
 def runner
   primes = []
-  max = 1000000
+  answer = {"sum" => 0, "length" => 0}
+  max = 1000000 
   get_primes(primes, max)
-  answer = consecutive_primes(primes, max)
+  consecutive_primes(primes, max, answer)
   message(answer)
 end
 
 def message(answer)
-  p "There are #{answer.length} consecutive primes"
-  p "They add up to #{answer.reduce(:+)}"
+  p "There are #{answer['length']} consecutive primes that add up to #{answer['sum']}"
 end
 
-def consecutive_primes(primes, max)
-  highest = [0]
-  primes.each do |start|
-    run = []
-    this_sum = 0
-    this_prime = primes.index(start)
-    ((primes.length - 1) - this_prime).times do |i|
-      this_sum += primes[this_prime + i]
-      run << primes[this_prime + i]
-      if check_prime(primes, this_sum)
-        if highest.length < run.length
-          highest = []
-          run.each do |num|
-            highest << num
-          end
+def consecutive_primes(primes, max, answer)
+  index_primes = (primes.length - 1) 
+  index_primes.times do |i|
+    count = 0
+    current_primes = primes[i..index_primes]
+    current_primes.reduce(0) do |memo, prime|
+      memo += prime
+      break if memo > max
+      count += 1
+      if is_prime?(primes,memo)
+        if count > answer['length']
+          answer['length'] = count
+          answer['sum'] = memo
         end
       end
+      break if current_primes.length < answer['length']
+      memo
     end
   end
-  return highest
+  return answer
 end
 
-def get_primes(primes, max, sum = 0)
-  answer = nil
-  i = 0
+def get_primes(primes, max, sum = 0, answer = nil, i = 0)
   until sum >= max
     if i == 0 || i == 1
       i += 1
@@ -45,7 +51,7 @@ def get_primes(primes, max, sum = 0)
       sum += i
       i += 1
     else
-      if check_prime(primes, i)
+      if is_prime?(primes, i)
         primes << i
         sum += i
       end
@@ -55,12 +61,13 @@ def get_primes(primes, max, sum = 0)
   return primes
 end
 
-def check_prime(primes, number)
+def is_prime?(primes, number)
   primes.each do |prime|
     if number % prime == 0
       return false
     end
   end
+  return true
 end
 
-runner
+start
