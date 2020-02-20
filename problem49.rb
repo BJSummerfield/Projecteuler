@@ -67,6 +67,9 @@ end
 
 def is_prime?(primes, number)
   primes.each do |prime|
+    if prime**2 > number
+      return true
+    end
     if number % prime == 0
       return false
     end
