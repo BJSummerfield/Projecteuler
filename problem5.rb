@@ -19,38 +19,52 @@
 # smallest_multiple(20)
 
 def smallest_multiple(number)
-  array = []
-  number.times do |i|
-    array<<i if is_prime(i)
-  end
-  array.length.times do |i|
-    x = array[i] 
-    exponent = 2
-    z = 1
-    until z >= number
-      z = x**exponent
-      array[i] = z if z < number
-      exponent += 1
-    end
-  end
+  numbers = Array(1..number)
+  primes = []
+  get_primes_lower_than_number(numbers, primes)
+  array = exponent_primes(primes, number)
+  return get_answer(array)
+end
+
+def get_answer(array)
   answer = 1
-  array.length.times do |i|
-    answer *= array[i]
+  array.each do |number|
+    answer *= number
   end
   return answer
 end
 
-def is_prime(number)
-  if number == 0 || number == 1 || number != 2 && number % 2 == 0
-   return false 
-  end
-  (number - 1).times do |i|
-    index = i+1
-    if number % index == 0 && index != 1
-      return false
+def exponent_primes(primes, number)
+  array = []
+  primes.each do |prime|
+    og_prime = prime
+    exponent = 2
+    number_exponent = 1
+    until number_exponent >= number
+      number_exponent = og_prime**exponent
+      prime = number_exponent if number_exponent < number
+      exponent +=1
     end
+    array << prime
   end
-  return true
+  return array
+end
+
+def get_primes_lower_than_number(numbers,primes)
+  numbers.each do |number|
+    is_prime?(number,primes)
+  end
+end
+
+def is_prime?(number, primes)
+  return if number == 0
+  return if number == 1
+    primes.each do |prime|
+      if number % prime == 0
+        return
+      end
+    end
+  primes << number
 end
 
 p smallest_multiple(20)
